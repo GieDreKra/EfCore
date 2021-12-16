@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopApp.Data;
 
 namespace ShopApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211216162432_data2")]
+    partial class data2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,12 +61,12 @@ namespace ShopApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShopId")
+                    b.Property<int?>("ShopId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShopId");
+                    b.HasIndex("ShopId1");
 
                     b.ToTable("ShopsItems");
 
@@ -72,32 +74,8 @@ namespace ShopApp.Migrations
                         new
                         {
                             Id = 1,
-                            ExpiryDate = new DateTime(2021, 12, 26, 18, 28, 10, 946, DateTimeKind.Local).AddTicks(8852),
+                            ExpiryDate = new DateTime(2022, 3, 26, 18, 24, 31, 615, DateTimeKind.Local).AddTicks(2540),
                             Name = "ShopItem1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ExpiryDate = new DateTime(2022, 3, 26, 18, 28, 10, 950, DateTimeKind.Local).AddTicks(902),
-                            Name = "ShopItem2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ExpiryDate = new DateTime(2021, 12, 26, 18, 28, 10, 950, DateTimeKind.Local).AddTicks(947),
-                            Name = "ShopItem3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ExpiryDate = new DateTime(2022, 3, 26, 18, 28, 10, 950, DateTimeKind.Local).AddTicks(954),
-                            Name = "ShopItem4"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ExpiryDate = new DateTime(2021, 12, 26, 18, 28, 10, 950, DateTimeKind.Local).AddTicks(959),
-                            Name = "ShopItem5"
                         });
                 });
 
@@ -105,7 +83,7 @@ namespace ShopApp.Migrations
                 {
                     b.HasOne("ShopApp.Models.Shop", "Shop")
                         .WithMany("Items")
-                        .HasForeignKey("ShopId");
+                        .HasForeignKey("ShopId1");
 
                     b.Navigation("Shop");
                 });

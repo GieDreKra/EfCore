@@ -1,1 +1,5 @@
-﻿
+﻿@model List<ShopItem>
+
+    @foreach(var i in @Model){
+        <li>@i.Name - @i.ExpiryDate - @i.Shop.Name</li>
+    }
