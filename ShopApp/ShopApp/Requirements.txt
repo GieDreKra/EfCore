@@ -21,7 +21,7 @@ as well Shop Name it belongs to.
 
 +6. Connect Shop and ShopItem with 'One to Many' relationship and allow assign Shop in Add/Edit.
 
-7. Introduce Tags (just id and name) into the system. There should be a 'many to many' relationshipp between Tag and ShopItem.
++7. Introduce Tags (just id and name) into the system. There should be a 'many to many' relationshipp between Tag and ShopItem.
 On ShopItem create/update(update lil bit more complex), you should be able to multi-select Tags.
 
 

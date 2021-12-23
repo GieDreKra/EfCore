@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace ShopApp.Dtos
 {
-    public class AddShopItem
+    public class ShopItemTag
     {
         public ShopItem ShopItem { get; set; }
-        public List<Shop> AllShops { get; set; }
-        public List<Tag> Tags { get; set; }
-        public List<int> SelectedTagIds { get; set; }
+        public int ShopItemId { get; set; }
+        public Tag Tag { get; set; }
+        public int TagId { get; set; }
+        public bool isDeleted { get; set; } = false;
     }
 }

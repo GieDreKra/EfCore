@@ -26,7 +26,7 @@ namespace ShopApp
         }
 
         public IActionResult AddShop()
-        {            
+        {
             return View();
         }
 
@@ -43,8 +43,8 @@ namespace ShopApp
 
         public IActionResult Delete(int id)
         {
-            var items= _context.ShopsItems.Where(sid=>sid.ShopId==id).ToList();
-            foreach(var item in items)
+            var items = _context.ShopsItems.Where(sid => sid.ShopId == id).ToList();
+            foreach (var item in items)
             {
                 item.ShopId = null;
             }

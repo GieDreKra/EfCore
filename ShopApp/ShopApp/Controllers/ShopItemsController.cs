@@ -22,7 +22,12 @@ namespace ShopApp.Controllers
         }
         public IActionResult Index()
         {
-            List<ShopItem> shops = _context.ShopsItems.Include(c => c.Shop).Where(c => c.ShopId != null).ToList();
+            List<ShopItem> shops = _context.ShopsItems
+                .Include(c => c.Shop)
+                .Include(t => t.ShopItemTags.Where(t => t.isDeleted == false))
+                .ThenInclude(t => t.Tag)
+                .Where(c => c.ShopId != null)
+                .ToList();
             return View(shops);
         }
 
@@ -32,7 +37,7 @@ namespace ShopApp.Controllers
             {
                 ShopItem = new ShopItem(),
                 AllShops = _context.Shops.ToList(),
-                //Tags = _context.Tags.ToList(),
+                Tags = _context.Tags.ToList(),
             };
             return View(addShopItem);
         }
@@ -47,6 +52,15 @@ namespace ShopApp.Controllers
             }
             _context.ShopsItems.Add(model.ShopItem);
             _context.SaveChanges();
+            foreach (var tagId in model.SelectedTagIds)
+            {
+                _context.ShopItemTags.Add(new ShopItemTag()
+                {
+                    TagId = tagId,
+                    ShopItemId = model.ShopItem.Id,
+                });
+            }
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -60,17 +74,15 @@ namespace ShopApp.Controllers
 
         public IActionResult Update(int id)
         {
-             var addShopItem = new AddShopItem()
+            var addShopItem = new AddShopItem()
             {
                 ShopItem = _context.ShopsItems.Find(id),
                 AllShops = _context.Shops.ToList(),
-                //Tags = _context.Tags.ToList(),
+                Tags = _context.Tags.ToList(),
             };
             return View(addShopItem);
         }
 
-
-        //kodel id nepasigauna?
         [HttpPost]
         public IActionResult Update(int id, AddShopItem model)
         {
@@ -82,8 +94,30 @@ namespace ShopApp.Controllers
             model.ShopItem.Id = id;
             _context.ShopsItems.Update(model.ShopItem);
             _context.SaveChanges();
+            List<ShopItemTag> shopItemTags = _context.ShopItemTags.Where(i => i.ShopItemId == id).ToList();
+            foreach (var item in shopItemTags)
+            {
+                _context.Remove(item);
+            }
+            _context.SaveChanges();
+            foreach (var tagId in model.SelectedTagIds)
+            {
+                if (_context.ShopItemTags.Where(i => i.ShopItemId == id & i.TagId == tagId & i.isDeleted == true).SingleOrDefault() != null)
+                {
+                    ShopItemTag item = _context.ShopItemTags.Where(i => i.ShopItemId == id & i.TagId == tagId & i.isDeleted == true).SingleOrDefault();
+                    item.isDeleted = false;
+                }
+                else
+                {
+                    _context.ShopItemTags.Add(new ShopItemTag()
+                    {
+                        TagId = tagId,
+                        ShopItemId = id,
+                    });
+                }
+            }
+            _context.SaveChanges();
             return RedirectToAction("Index");
-
         }
     }
 }

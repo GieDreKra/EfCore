@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopApp.Dtos;
 using ShopApp.Models;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace ShopApp.Data
 
         public DbSet<Shop> Shops { get; set; }
         public DbSet<ShopItem> ShopsItems { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<ShopItemTag> ShopItemTags { get; set; }
 
         public override int SaveChanges()
         {
@@ -50,10 +53,13 @@ namespace ShopApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ShopItemTag>().HasKey(bc => new { bc.TagId, bc.ShopItemId });
             modelBuilder.Entity<Shop>().Property<bool>("isDeleted");
             modelBuilder.Entity<Shop>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
             modelBuilder.Entity<ShopItem>().Property<bool>("isDeleted");
             modelBuilder.Entity<ShopItem>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+            //modelBuilder.Entity<ShopItemTag>().Property<bool>("isDeleted");
+            //modelBuilder.Entity<ShopItemTag>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
 
             modelBuilder.Entity<Shop>().HasData(new Shop()
             {

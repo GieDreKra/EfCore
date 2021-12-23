@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopApp.Data;
 
 namespace ShopApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211223174731_tag2")]
+    partial class tag2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +28,6 @@ namespace ShopApp.Migrations
 
                     b.Property<int>("ShopItemId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("TagId", "ShopItemId");
 
@@ -102,35 +101,35 @@ namespace ShopApp.Migrations
                         new
                         {
                             Id = 1,
-                            ExpiryDate = new DateTime(2022, 1, 2, 19, 50, 49, 233, DateTimeKind.Local).AddTicks(1177),
+                            ExpiryDate = new DateTime(2022, 1, 2, 19, 47, 30, 540, DateTimeKind.Local).AddTicks(6170),
                             Name = "ShopItem1",
                             isDeleted = false
                         },
                         new
                         {
                             Id = 2,
-                            ExpiryDate = new DateTime(2022, 4, 2, 19, 50, 49, 238, DateTimeKind.Local).AddTicks(8691),
+                            ExpiryDate = new DateTime(2022, 4, 2, 19, 47, 30, 545, DateTimeKind.Local).AddTicks(2152),
                             Name = "ShopItem2",
                             isDeleted = false
                         },
                         new
                         {
                             Id = 3,
-                            ExpiryDate = new DateTime(2022, 1, 2, 19, 50, 49, 238, DateTimeKind.Local).AddTicks(8773),
+                            ExpiryDate = new DateTime(2022, 1, 2, 19, 47, 30, 545, DateTimeKind.Local).AddTicks(2214),
                             Name = "ShopItem3",
                             isDeleted = false
                         },
                         new
                         {
                             Id = 4,
-                            ExpiryDate = new DateTime(2022, 4, 2, 19, 50, 49, 238, DateTimeKind.Local).AddTicks(8792),
+                            ExpiryDate = new DateTime(2022, 4, 2, 19, 47, 30, 545, DateTimeKind.Local).AddTicks(2224),
                             Name = "ShopItem4",
                             isDeleted = false
                         },
                         new
                         {
                             Id = 5,
-                            ExpiryDate = new DateTime(2022, 1, 2, 19, 50, 49, 238, DateTimeKind.Local).AddTicks(8809),
+                            ExpiryDate = new DateTime(2022, 1, 2, 19, 47, 30, 545, DateTimeKind.Local).AddTicks(2231),
                             Name = "ShopItem5",
                             isDeleted = false
                         });

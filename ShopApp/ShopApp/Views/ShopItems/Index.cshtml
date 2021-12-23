@@ -1,9 +1,13 @@
 ﻿@model List<ShopItem>
 
     @foreach(var i in @Model){
-        <li>@i.Name - @i.ExpiryDate - @i.Shop.Name 
+        <li>@i.Name - @i.ExpiryDate - @i.Shop.Name - Tags: 
             @Html.ActionLink("Update","Update","ShopItems", new{id=@i.Id},new{@class="btn btn-secondary"})
             @Html.ActionLink("Delete","Delete","ShopItems", new{id=@i.Id},new{@class="btn btn-danger"})
-        </li>
+
+            @foreach(var t in @i.ShopItemTags){
+                <ul>@t.Tag.Name</ul>
+            }
+                   </li>
 
     }

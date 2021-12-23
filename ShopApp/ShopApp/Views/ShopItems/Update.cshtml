@@ -1,7 +1,6 @@
 ﻿@model ShopApp.Dtos.AddShopItem
 @using (Html.BeginForm("Update", "ShopItems", FormMethod.Post))
-    {
-       
+    {       
         @Html.LabelFor(a=>a.ShopItem.Name)
         @Html.TextBoxFor(a=>a.ShopItem.Name)
         @Html.ValidationMessageFor(a => a.ShopItem.Name)
@@ -14,6 +13,9 @@
         @Html.DropDownListFor(a => a.ShopItem.ShopId, new SelectList(Model.AllShops, "Id", "Name"))
         @Html.ValidationMessageFor(a => a.ShopItem.Shop)
 
-        <input type="submit" value="Submit"/>
+        @Html.LabelFor(a=>a.ShopItem.ShopItemTags)
+        @Html.ListBoxFor(a => a.SelectedTagIds, new SelectList(Model.Tags, "Id", "Name"))
+        @Html.ValidationMessageFor(a => a.ShopItem.ShopItemTags)
 
+        <input type="submit" value="Submit"/>
     }
