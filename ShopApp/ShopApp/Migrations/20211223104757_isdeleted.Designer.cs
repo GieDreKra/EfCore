@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopApp.Data;
 
 namespace ShopApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211223104757_isdeleted")]
+    partial class isdeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,9 +73,6 @@ namespace ShopApp.Migrations
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ShopId");
@@ -84,37 +83,32 @@ namespace ShopApp.Migrations
                         new
                         {
                             Id = 1,
-                            ExpiryDate = new DateTime(2022, 1, 2, 13, 0, 3, 118, DateTimeKind.Local).AddTicks(8187),
-                            Name = "ShopItem1",
-                            isDeleted = false
+                            ExpiryDate = new DateTime(2022, 1, 2, 12, 47, 57, 341, DateTimeKind.Local).AddTicks(6429),
+                            Name = "ShopItem1"
                         },
                         new
                         {
                             Id = 2,
-                            ExpiryDate = new DateTime(2022, 4, 2, 13, 0, 3, 125, DateTimeKind.Local).AddTicks(3530),
-                            Name = "ShopItem2",
-                            isDeleted = false
+                            ExpiryDate = new DateTime(2022, 4, 2, 12, 47, 57, 347, DateTimeKind.Local).AddTicks(4139),
+                            Name = "ShopItem2"
                         },
                         new
                         {
                             Id = 3,
-                            ExpiryDate = new DateTime(2022, 1, 2, 13, 0, 3, 125, DateTimeKind.Local).AddTicks(3579),
-                            Name = "ShopItem3",
-                            isDeleted = false
+                            ExpiryDate = new DateTime(2022, 1, 2, 12, 47, 57, 347, DateTimeKind.Local).AddTicks(4189),
+                            Name = "ShopItem3"
                         },
                         new
                         {
                             Id = 4,
-                            ExpiryDate = new DateTime(2022, 4, 2, 13, 0, 3, 125, DateTimeKind.Local).AddTicks(3587),
-                            Name = "ShopItem4",
-                            isDeleted = false
+                            ExpiryDate = new DateTime(2022, 4, 2, 12, 47, 57, 347, DateTimeKind.Local).AddTicks(4196),
+                            Name = "ShopItem4"
                         },
                         new
                         {
                             Id = 5,
-                            ExpiryDate = new DateTime(2022, 1, 2, 13, 0, 3, 125, DateTimeKind.Local).AddTicks(3593),
-                            Name = "ShopItem5",
-                            isDeleted = false
+                            ExpiryDate = new DateTime(2022, 1, 2, 12, 47, 57, 347, DateTimeKind.Local).AddTicks(4201),
+                            Name = "ShopItem5"
                         });
                 });
 

@@ -1,0 +1,20 @@
+﻿@model ShopApp.Dtos.AddShopItem
+
+@using (Html.BeginForm("Add", "ShopItems", FormMethod.Post))
+    {
+        
+        @Html.LabelFor(a=>a.ShopItem.Name)
+        @Html.TextBoxFor(a=>a.ShopItem.Name)
+        @Html.ValidationMessageFor(a => a.ShopItem.Name)
+
+        @Html.LabelFor(a=>a.ShopItem.ExpiryDate)
+        @Html.TextBoxFor(a=>a.ShopItem.ExpiryDate)
+        @Html.ValidationMessageFor(a => a.ShopItem.ExpiryDate)
+  
+        @Html.LabelFor(a=>a.ShopItem.Shop)
+        @Html.DropDownListFor(a => a.ShopItem.ShopId, new SelectList(Model.AllShops, "Id", "Name"))
+        @Html.ValidationMessageFor(a => a.ShopItem.Shop)
+
+        <input type="submit" value="Submit"/>
+
+    }

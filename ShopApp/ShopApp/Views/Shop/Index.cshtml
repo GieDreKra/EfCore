@@ -1,7 +1,10 @@
 ﻿@model List<Shop>
 
 @foreach(var s in @Model){
-    <li>@s.Name </li>
+    <li>@s.Name 
+        @Html.ActionLink("Update","Update","Shop", new{id=@s.Id},new{@class="btn btn-secondary"})
+        @Html.ActionLink("Delete","Delete","Shop", new{id=@s.Id},new{@class="btn btn-danger"})
+    </li>
     foreach(var i in @s.Items)
     {
         <ul>@i.Name - @i.ExpiryDate</ul>

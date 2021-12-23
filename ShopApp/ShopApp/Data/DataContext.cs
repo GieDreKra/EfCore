@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShopApp.Data
@@ -18,8 +19,42 @@ namespace ShopApp.Data
         public DbSet<Shop> Shops { get; set; }
         public DbSet<ShopItem> ShopsItems { get; set; }
 
+        public override int SaveChanges()
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChanges();
+        }
+
+       // public override Task SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+       // {
+       //     UpdateSoftDeleteStatuses();
+       //     return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+       // }
+
+        private void UpdateSoftDeleteStatuses()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["isDeleted"] = false;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["isDeleted"] = true;
+                        break;
+                }
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Shop>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Shop>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+            modelBuilder.Entity<ShopItem>().Property<bool>("isDeleted");
+            modelBuilder.Entity<ShopItem>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+
             modelBuilder.Entity<Shop>().HasData(new Shop()
             {
                 Id=1,

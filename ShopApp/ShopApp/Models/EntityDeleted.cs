@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ShopApp.Models
 {
-    public class Shop : EntityDeleted
+    public class EntityDeleted: EntityName
     {
-        public List<ShopItem> Items { get; set; }
+        public bool isDeleted { get; set; } = false;
     }
 }
