@@ -1,0 +1,9 @@
+﻿@model Tag
+
+@using (Html.BeginForm("SendSubmitData", "Tag", FormMethod.Post))
+    {        
+        @Html.LabelFor(a=>a.Name)
+        @Html.TextBoxFor(a=>a.Name)
+  
+        <input type="submit" value="Submit"/>
+    }

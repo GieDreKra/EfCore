@@ -17,7 +17,6 @@ namespace ShopApp
     {
         public Startup(IConfiguration configuration)
         {
-
             Configuration = configuration;
         }
 
@@ -45,6 +44,7 @@ namespace ShopApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();

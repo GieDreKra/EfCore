@@ -8,34 +8,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopApp
+namespace ShopApp.Controllers
 {
-    public class ShopController : Controller
+    public class TagController : Controller
     {
         private DataContext _context;
 
-        public ShopController(DataContext context)
+        public TagController(DataContext context)
         {
             _context = context;
         }
 
         public IActionResult Index()
         {
-            List<Shop> shops = _context.Shops.Include(c => c.Items).ToList();
-            return View(shops);
+            List<Tag> tags = _context.Tags.ToList();
+            return View(tags);
         }
 
-        public IActionResult AddShop()
+        public IActionResult AddTag()
         {
             return View();
         }
 
-        public IActionResult SendSubmitData(Shop model)
+        public IActionResult SendSubmitData(Tag model)
         {
             if (model.Name is not null)
             {
-                object shop = new Shop { Name = model.Name };
-                _context.Add(shop);
+                object tag = new Tag { Name = model.Name };
+                _context.Add(tag);
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
@@ -43,31 +43,31 @@ namespace ShopApp
 
         public IActionResult Delete(int id)
         {
-            var items = _context.ShopsItems.Where(sid => sid.ShopId == id).ToList();
+            var items = _context.ShopItemTags.Where(tid => tid.TagId == id).ToList();
             foreach (var item in items)
             {
-                item.ShopId = null;
+                item.isDeleted = true;
             }
-            var shop = _context.Shops.Find(id);
-            _context.Remove(shop);
+            var tag = _context.Tags.Find(id);
+            _context.Remove(tag);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public IActionResult Update(int id)
         {
-            var shop = _context.Shops.Find(id);
-            return View(shop);
+            var tag = _context.Tags.Find(id);
+            return View(tag);
         }
 
         [HttpPost]
-        public IActionResult Update(Shop model)
+        public IActionResult Update(Tag model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            _context.Shops.Update(model);
+            _context.Tags.Update(model);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

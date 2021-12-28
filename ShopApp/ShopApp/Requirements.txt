@@ -42,6 +42,6 @@ Advanced and Optional:
 
 ------------------------------------------------------
 
-6. Add Tag List/Add/Remove functionality.
++6. Add Tag List/Add/Remove functionality.
 7. You have List/Add/Remove for Shops/Tags/ShopItems -> try to minimised the code used (Research c# Generics)
 8. Lecture's 'many to many' add/edit method can be improved -> find a way to improve that.

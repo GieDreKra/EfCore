@@ -58,6 +58,8 @@ namespace ShopApp.Data
             modelBuilder.Entity<Shop>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
             modelBuilder.Entity<ShopItem>().Property<bool>("isDeleted");
             modelBuilder.Entity<ShopItem>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+            modelBuilder.Entity<Tag>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Tag>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
             //modelBuilder.Entity<ShopItemTag>().Property<bool>("isDeleted");
             //modelBuilder.Entity<ShopItemTag>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
 

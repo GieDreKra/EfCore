@@ -1,0 +1,8 @@
+﻿@model List<Tag>
+
+@foreach(var t in @Model){
+    <li>@t.Name 
+        @Html.ActionLink("Update","Update","Tag", new{id=@t.Id},new{@class="btn btn-secondary"})
+        @Html.ActionLink("Delete","Delete","Tag", new{id=@t.Id},new{@class="btn btn-danger"})
+    </li>
+}
