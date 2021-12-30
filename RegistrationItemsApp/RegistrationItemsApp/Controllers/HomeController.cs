@@ -37,20 +37,28 @@ namespace RegistrationItemsApp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult SendSubmitData(List<RegistrationItem> model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SendSubmitData(List<RegistrationItem> model, string answer)
         {
-            if (!ModelState.IsValid)
+            if ((ModelState.IsValid) && !String.IsNullOrWhiteSpace(answer))
             {
-                return View(model);
+                switch (answer)
+                {
+                    case "Saugoti pataisymus":
+                        foreach (RegistrationItem item in model)
+                        {
+                            var registrationItemToUpdate = _registrationItemRepository.Get(item.Id);
+                            registrationItemToUpdate.SelectedValueId = item.SelectedValueId;
+                            _registrationItemRepository.Update(registrationItemToUpdate);
+                        }
+                        return RedirectToAction("Index");
+                    case "Atšaukti pataisymus":
+                        return RedirectToAction("Index");
+                }
+                return RedirectToAction("Index");
             }
-
-            foreach (RegistrationItem item in model)
-            {
-                var registrationItemToUpdate = _registrationItemRepository.Get(item.Id);
-                registrationItemToUpdate.SelectedValueId = item.SelectedValueId;
-                _registrationItemRepository.Update(registrationItemToUpdate);
-            }
-            return RedirectToAction("Index");
+            return View(model);
         }
 
     }
