@@ -1,0 +1,33 @@
+﻿@model List<RegistrationItemsApp.Models.RegistrationItem>
+ 
+<script type="text/javascript">
+
+</script>
+@using (Html.BeginForm("SendSubmitData", "Home", FormMethod.Post))
+    {
+
+     
+<table class="table" >
+  <thead>
+    <tr>
+      <th scope="col">Registracijos Požymiai</th>
+      <th scope="col">Reikšmė</th>
+    </tr>
+  </thead>
+  <tbody>
+        @for (var i = 0; i < @Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[@i].Name</td>
+                    <td >
+                        @Html.HiddenFor(q => q[@i].Id)
+                        @Html.DropDownListFor(q => @Model[@i].SelectedValueId, new SelectList(@Model[@i].Values,"Id", "Name"))
+                    </td>
+                </tr>
+            }
+  </tbody>
+</table>
+ <input type="submit" value="Koreguoti požymius"  id="btnSubmit" disabled/>
+ <input type="submit" value="Saugoti pataisymus" id="btnSave" />
+ <input type="submit" value="Atšaukti pataisymus" id="btnCancel" disabled/>
+ }
