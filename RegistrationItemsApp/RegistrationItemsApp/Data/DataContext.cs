@@ -12,6 +12,7 @@ namespace RegistrationItemsApp.Data
     {
         public DbSet<RegistrationItem> RegistrationItems { get; set; }
         public DbSet<Value> Values { get; set; }
+        public DbSet<Form> Forms { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
@@ -102,6 +103,16 @@ namespace RegistrationItemsApp.Data
             {
                 Id = 15,
                 Name = "Ne"
+            });
+
+            modelBuilder.Entity<Form>().HasData(new Form()
+            {
+                Id = 1,
+                Name = "Form1"
+            }, new Form()
+            {
+                Id = 2,
+                Name = "Form2"
             });
         }
     }

@@ -56,7 +56,7 @@ namespace RegistrationItemsApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=RegPoz}/{action=Index}/{regid=1}");
             });
         }
     }

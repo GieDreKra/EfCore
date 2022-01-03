@@ -10,7 +10,7 @@ using RegistrationItemsApp.Data;
 namespace RegistrationItemsApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211230172037_init")]
+    [Migration("20220103204452_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace RegistrationItemsApp.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("RegistrationItemsApp.Models.RegistrationItem", b =>
+            modelBuilder.Entity("RegistrationItemsApp.Models.Form", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,10 +31,42 @@ namespace RegistrationItemsApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Forms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Form1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Form2"
+                        });
+                });
+
+            modelBuilder.Entity("RegistrationItemsApp.Models.RegistrationItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("FormId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SelectedValueId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FormId");
 
                     b.ToTable("RegistrationItems");
 
@@ -168,6 +200,15 @@ namespace RegistrationItemsApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("RegistrationItemsApp.Models.RegistrationItem", b =>
+                {
+                    b.HasOne("RegistrationItemsApp.Models.Form", "Form")
+                        .WithMany("RegistrationItems")
+                        .HasForeignKey("FormId");
+
+                    b.Navigation("Form");
+                });
+
             modelBuilder.Entity("RegistrationItemsApp.Models.Value", b =>
                 {
                     b.HasOne("RegistrationItemsApp.Models.RegistrationItem", "RegistrationItem")
@@ -175,6 +216,11 @@ namespace RegistrationItemsApp.Migrations
                         .HasForeignKey("RegistrationItemId");
 
                     b.Navigation("RegistrationItem");
+                });
+
+            modelBuilder.Entity("RegistrationItemsApp.Models.Form", b =>
+                {
+                    b.Navigation("RegistrationItems");
                 });
 
             modelBuilder.Entity("RegistrationItemsApp.Models.RegistrationItem", b =>

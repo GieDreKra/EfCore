@@ -17,9 +17,9 @@ namespace RegistrationItemsApp.Repositories
             _context = context;
         }
 
-        public List<RegistrationItem> GetAll()
+        public List<RegistrationItem> GetAll(int regid)
         {
-            return _context.RegistrationItems.Include(i => i.Values).ToList();
+            return _context.RegistrationItems.Include(i => i.Form).Include(i => i.Values).Where(i => i.Form.Id == regid).ToList();
         }
 
         public void Update(RegistrationItem registrationItem)
