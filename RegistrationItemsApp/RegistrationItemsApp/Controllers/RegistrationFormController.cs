@@ -1,25 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using RegistrationItemsApp.Models;
 using RegistrationItemsApp.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RegistrationItemsApp.Controllers
 {
-    public class RegPozController:Controller
+    public class RegistrationFormController:Controller
     {
-        private readonly ILogger<RegPozController> _logger;
         private RegistrationItemRepository _registrationItemRepository;
 
-        public RegPozController(ILogger<RegPozController> logger, RegistrationItemRepository registrationItemRepository)
+        public RegistrationFormController(RegistrationItemRepository registrationItemRepository)
         {
             _registrationItemRepository = registrationItemRepository;
-            _logger = logger;
         }
 
         public IActionResult Index(int regid)

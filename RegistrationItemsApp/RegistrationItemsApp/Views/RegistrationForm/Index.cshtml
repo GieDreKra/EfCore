@@ -16,7 +16,7 @@
 
   });
 </script>
-@using (Html.BeginForm("SendSubmitData", "RegPoz", FormMethod.Post))
+@using (Html.BeginForm("SendSubmitData", "RegistrationForm", FormMethod.Post))
     {     
 <table class="table" >
   <thead>
@@ -39,7 +39,7 @@
             }
   </tbody>
 </table>
- <input type="submit" value="Koreguoti požymius"  id="btnSubmit"/>
- <input type="submit" name="answer" value="Saugoti pataisymus" id="btnSave" disabled/>
- <input type="submit" name="answer" value="Atšaukti pataisymus" id="btnCancel" disabled/>
+ <input type="submit" value="Koreguoti požymius"  id="btnSubmit" class="btn btn-primary"/>
+ <input type="submit" name="answer" value="Saugoti pataisymus" id="btnSave" disabled class="btn btn-success"/>
+ <input type="submit" name="answer" value="Atšaukti pataisymus" id="btnCancel" disabled class="btn btn-danger"/>
  }
