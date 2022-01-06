@@ -1,0 +1,28 @@
+﻿@model List<Item>
+
+    <table class="table table-bordered table-responsive table-hover">  
+    <tr>  
+        <th>Currency </th>  
+        <th>Rate </th>  
+        <th>Unit </th>  
+    </tr> 
+    @foreach(var item in @Model)
+    {
+        <tr>
+            <td>@item.Currency</td>
+            @if (@item.Rate < 0)
+            {
+                <td style="color:red;">@item.Rate</td>
+            } 
+            else @if (@item.Rate == 0)
+                {
+                    <td>@item.Rate</td>
+                }
+                else
+                {
+                    <td style="color:green;">@item.Rate</td>
+                }
+            <td>@item.Unit</td>       
+        </tr>
+    }
+    </table>

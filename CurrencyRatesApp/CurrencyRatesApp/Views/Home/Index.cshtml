@@ -1,0 +1,10 @@
+﻿@model List<Item>
+    @using (Html.BeginForm("ListOfChanges", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="issuerKey">Select Date: </label>
+        <input type="date" name="date" />
+        <input type="submit" value="Search" />
+    </div>
+}
+
