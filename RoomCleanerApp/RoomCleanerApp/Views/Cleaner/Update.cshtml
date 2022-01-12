@@ -1,0 +1,19 @@
+﻿@model RoomCleanerApp.Dtos.UpdateCleanerDto
+<table class="table">   
+    <tr>
+        <th>Floor</th>
+    </tr>
+        @foreach(var room in @Model.CleanRooms)
+    {
+            <tr>
+                <td>@room.Room.Floor</td>
+                <td>               
+                    @Html.ActionLink("Cleaned","Cleaned","Cleaner", 
+                    new{roomid=@room.Room.Id,cleanerid=@Model.CleanerId},
+                    new{@class="btn btn-secondary"})
+                </td>   
+            </tr>
+            
+        }
+
+</table>

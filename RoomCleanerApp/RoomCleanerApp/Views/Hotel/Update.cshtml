@@ -1,0 +1,59 @@
+﻿@model RoomCleanerApp.Dtos.UpdateHotelDto
+<table class="table">   
+    <tr>
+        <th>Floor</th>
+    </tr>
+        @foreach(var room in @Model.CleanRooms)
+    {
+        @if (@room.Room.Booked == false && @room.Cleaned== true)
+        {
+            <tr>
+                <td>@room.Room.Floor</td>
+                <td>
+                    @Html.ActionLink("Book","Book","Hotel", 
+                    new{id=@room.Room.Id,hotelid=@room.Room.HotelId},
+                    new{@class="btn btn-secondary"})
+                </td>   
+            </tr>
+        }
+    else if (@room.Room.Booked == false)
+            {
+                <tr>
+                <td>@room.Room.Floor</td>
+                <td>
+                    @Html.ActionLink("Book","Book","Hotel", 
+                    new{id=@room.Room.Id,hotelid=@room.Room.HotelId},
+                    new{@class="btn btn-secondary disabled"})
+                    Need to be cleaned
+                </td>   
+            </tr>
+            }
+        }
+
+        @foreach(var room in @Model.CleanRooms)
+        {
+            @if (@room.Room.Booked == true)
+            {
+            <tr>
+                <td>@room.Room.Floor</td>
+                <td>               
+                    @Html.ActionLink("Release","Release","Hotel", 
+                    new{id=@room.Room.Id,hotelid=@room.Room.HotelId},
+                    new{@class="btn btn-secondary"})
+                </td>   
+            </tr>
+            }
+        }
+
+</table>
+</table>
+    @if  ((@Model.MaxRooms > @Model.CleanRooms.Count()) || (@Model.CleanRooms.Count()==0)){
+
+@using (Html.BeginForm("Create", "Hotel", FormMethod.Post))
+{
+@Html.HiddenFor(a=>a.HotelId)
+@Html.LabelFor(a=>a.Floor)
+@Html.TextBoxFor(a=>a.Floor)
+<input type="submit" value="Create Room"/>    
+}    
+    }

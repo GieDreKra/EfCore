@@ -1,0 +1,37 @@
+﻿@model RoomCleanerApp.Dtos.CreateCleanerDto
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>City</th>
+        <th></th>
+    </tr>
+    @foreach(var cleaner in @Model.Cleaners)
+    { 
+        <tr>
+            <td>@cleaner.Name</td>
+            <td>@cleaner.Surname</td>
+            <td>@cleaner.City</td>
+            <td>
+                @Html.ActionLink("Update","Update","Cleaner", 
+                new{cleanerid=@cleaner.Id},
+                new{@class="btn btn-secondary"})
+                @Html.ActionLink("Delete","Delete","Cleaner", 
+                new{cleanerid=@cleaner.Id},
+                new{@class="btn btn-secondary"})
+            </td>
+        </tr>
+    }
+</table>
+@using (Html.BeginForm("Create", "Cleaner", FormMethod.Post))
+{
+@Html.LabelFor(a=>a.Name)
+@Html.TextBoxFor(a=>a.Name)
+
+@Html.LabelFor(a=>a.Surname)
+@Html.TextBoxFor(a=>a.Surname)
+
+@Html.LabelFor(a=>a.City)
+@Html.TextBoxFor(a=>a.City)
+<input type="submit" value="Create Cleaner"/>    
+} 
