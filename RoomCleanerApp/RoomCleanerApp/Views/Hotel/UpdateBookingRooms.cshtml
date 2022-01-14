@@ -17,8 +17,8 @@
             </tr>
         }
     else if (@room.Room.Booked == false)
-            {
-                <tr>
+    {
+        <tr>
                 <td>@room.Room.Floor</td>
                 <td>
                     @Html.ActionLink("Book","Book","Hotel", 
@@ -26,9 +26,9 @@
                     new{@class="btn btn-secondary disabled"})
                     Need to be cleaned
                 </td>   
-            </tr>
-            }
-        }
+        </tr>
+    }
+}
 
         @foreach(var room in @Model.CleanRooms)
         {
@@ -44,5 +44,4 @@
             </tr>
             }
         }
-
 </table>

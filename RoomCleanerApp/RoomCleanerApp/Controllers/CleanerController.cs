@@ -2,11 +2,6 @@
 using RoomCleanerApp.Data;
 using RoomCleanerApp.Dtos;
 using RoomCleanerApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoomCleanerApp.Controllers
 {
@@ -19,9 +14,15 @@ namespace RoomCleanerApp.Controllers
         }
         public IActionResult Index()
         {
+            List<CleanerDto> cleanerList = new List<CleanerDto> { };
+            foreach (var cleaner in _context.Cleaners.ToList())
+            {
+                cleanerList.Add(new CleanerDto { Cleaner = cleaner, City = _context.Cities.Where(i => i.Id == cleaner.CityId).First().Name });
+            }
             var createCleanerModel = new CreateCleanerDto()
             {
-                Cleaners = _context.Cleaners.ToList(),
+                CleanerDtos = cleanerList,
+                AllCities = _context.Cities.ToList(),
             };
             return View(createCleanerModel);
         }
@@ -32,15 +33,15 @@ namespace RoomCleanerApp.Controllers
             {
                 Name = createCleanerDto.Name,
                 Surname = createCleanerDto.Surname,
-                City = createCleanerDto.City
+                CityId = createCleanerDto.CityId
             });
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int cleanerid)
         {
-            _context.Remove(_context.Cleaners.First(i => i.Id == id));
+            _context.Remove(_context.Cleaners.First(i => i.Id == cleanerid));
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -75,7 +76,7 @@ namespace RoomCleanerApp.Controllers
 
         public IActionResult Cleaned(int roomid, int cleanerid)
         {
-            var cleanedRoom = _context.RoomsCleaners.Where(i => i.CleanerId == cleanerid && i.RoomId == roomid)
+            var cleanedRoom = _context.RoomsCleaners.Where(i => i.CleanerId == cleanerid && i.RoomId == roomid && i.Cleaned == false)
                 .First();
             cleanedRoom.Cleaned = true;
             _context.Update(cleanedRoom);

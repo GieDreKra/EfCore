@@ -6,18 +6,18 @@
         <th>City</th>
         <th></th>
     </tr>
-    @foreach(var cleaner in @Model.Cleaners)
+    @foreach(var cleaner in @Model.CleanerDtos)
     { 
         <tr>
-            <td>@cleaner.Name</td>
-            <td>@cleaner.Surname</td>
+            <td>@cleaner.Cleaner.Name</td>
+            <td>@cleaner.Cleaner.Surname</td>
             <td>@cleaner.City</td>
             <td>
                 @Html.ActionLink("Update","Update","Cleaner", 
-                new{cleanerid=@cleaner.Id},
+                new{cleanerid=@cleaner.Cleaner.Id},
                 new{@class="btn btn-secondary"})
                 @Html.ActionLink("Delete","Delete","Cleaner", 
-                new{cleanerid=@cleaner.Id},
+                new{cleanerid=@cleaner.Cleaner.Id},
                 new{@class="btn btn-secondary"})
             </td>
         </tr>
@@ -31,7 +31,7 @@
 @Html.LabelFor(a=>a.Surname)
 @Html.TextBoxFor(a=>a.Surname)
 
-@Html.LabelFor(a=>a.City)
-@Html.TextBoxFor(a=>a.City)
+@Html.LabelFor(a=>a.AllCities)
+@Html.DropDownListFor(a=>a.CityId, new SelectList(@Model.AllCities,"Id","Name")) 
 <input type="submit" value="Create Cleaner"/>    
 } 

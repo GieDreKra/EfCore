@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RoomCleanerApp.Dtos;
 using RoomCleanerApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoomCleanerApp.Data
 {
@@ -15,6 +9,7 @@ namespace RoomCleanerApp.Data
         public DbSet<Cleaner> Cleaners { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomCleaner> RoomsCleaners { get; set; }
+        public DbSet<City> Cities { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -23,21 +18,38 @@ namespace RoomCleanerApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<City>().HasData(
+           new City
+           {
+               Id = 1,
+               Name = "Kaunas",
+           }, new City
+           {
+               Id = 2,
+               Name = "Vilnius",
+           });
+
             modelBuilder.Entity<Hotel>().HasData(
             new Hotel
             {
-                Id=1,
-                City = "Kaunas",
+                Id = 1,
+                CityId = 1,
                 Address = "Perkūno g. 1",
                 TotalRooms = 5
             }, new Hotel
             {
-                Id=2,
-                City = "Kaunas",
+                Id = 2,
+                CityId = 1,
                 Address = "Jonavos g. 1",
                 TotalRooms = 2
+            },
+            new Hotel
+            {
+                Id = 3,
+                CityId = 2,
+                Address = "Gedimino g. 1",
+                TotalRooms = 3
             });
-
         }
     }
 }

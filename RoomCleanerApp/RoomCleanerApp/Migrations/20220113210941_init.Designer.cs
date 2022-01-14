@@ -11,8 +11,8 @@ using RoomCleanerApp.Data;
 namespace RoomCleanerApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220112114553_RoomCleanerDataContext")]
-    partial class RoomCleanerDataContext
+    [Migration("20220113210941_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,35 @@ namespace RoomCleanerApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("RoomCleanerApp.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Kaunas"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Vilnius"
+                        });
+                });
+
             modelBuilder.Entity("RoomCleanerApp.Models.Cleaner", b =>
                 {
                     b.Property<int>("Id")
@@ -31,9 +60,8 @@ namespace RoomCleanerApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -44,6 +72,8 @@ namespace RoomCleanerApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.ToTable("Cleaners");
                 });
@@ -60,14 +90,15 @@ namespace RoomCleanerApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalRooms")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.ToTable("Hotels");
 
@@ -76,15 +107,22 @@ namespace RoomCleanerApp.Migrations
                         {
                             Id = 1,
                             Address = "Perkūno g. 1",
-                            City = "Kaunas",
+                            CityId = 1,
                             TotalRooms = 5
                         },
                         new
                         {
                             Id = 2,
                             Address = "Jonavos g. 1",
-                            City = "Kaunas",
+                            CityId = 1,
                             TotalRooms = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Gedimino g. 1",
+                            CityId = 2,
+                            TotalRooms = 3
                         });
                 });
 
@@ -138,6 +176,24 @@ namespace RoomCleanerApp.Migrations
                     b.ToTable("RoomsCleaners");
                 });
 
+            modelBuilder.Entity("RoomCleanerApp.Models.Cleaner", b =>
+                {
+                    b.HasOne("RoomCleanerApp.Models.City", null)
+                        .WithMany("Cleaners")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoomCleanerApp.Models.Hotel", b =>
+                {
+                    b.HasOne("RoomCleanerApp.Models.City", null)
+                        .WithMany("Hotels")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RoomCleanerApp.Models.Room", b =>
                 {
                     b.HasOne("RoomCleanerApp.Models.Hotel", null)
@@ -164,6 +220,13 @@ namespace RoomCleanerApp.Migrations
                     b.Navigation("Cleaner");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("RoomCleanerApp.Models.City", b =>
+                {
+                    b.Navigation("Cleaners");
+
+                    b.Navigation("Hotels");
                 });
 
             modelBuilder.Entity("RoomCleanerApp.Models.Cleaner", b =>

@@ -1,4 +1,4 @@
-﻿@model List<Hotel>
+﻿@model List<RoomCleanerApp.Dtos.HotelDto>
 <table class="table">
     <tr>
         <th>City</th>
@@ -9,10 +9,10 @@
     { 
         <tr>
             <td>@hotel.City</td>
-            <td>@hotel.Address</td>
+            <td>@hotel.Hotel.Address</td>
             <td>
                 @Html.ActionLink("Update","Update","Hotel", 
-                new{hotelid=@hotel.Id, form="book"},
+                new{hotelid=@hotel.Hotel.Id, form="book"},
                 new{@class="btn btn-secondary"})
             </td>
         </tr>

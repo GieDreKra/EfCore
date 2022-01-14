@@ -3,12 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using RoomCleanerApp.Data;
 using RoomCleanerApp.Dtos;
 using RoomCleanerApp.Models;
-using RoomCleanerApp.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RoomCleanerApp.Controllers
 {
@@ -21,12 +15,12 @@ namespace RoomCleanerApp.Controllers
         }
         public IActionResult Index()
         {
-            List<Hotel> hotelList = new List<Hotel> { };
+            List<HotelDto> hotelList = new List<HotelDto> { };
             foreach (var hotel in _context.Hotels.Include(i => i.Rooms).ToList())
             {
                 if (hotel.TotalRooms > hotel.Rooms.Where(i => i.HotelId == hotel.Id).Count())
                 {
-                    hotelList.Add(hotel);
+                    hotelList.Add(new HotelDto { Hotel = hotel, City = _context.Cities.Where(i => i.Id == hotel.CityId).First().Name });
                 }
             }
             return View(hotelList);
@@ -34,10 +28,10 @@ namespace RoomCleanerApp.Controllers
 
         public IActionResult HotelsBooking()
         {
-            List<Hotel> hotelList = new List<Hotel> { };
+            List<HotelDto> hotelList = new List<HotelDto> { };
             foreach (var hotel in _context.Hotels.Include(i => i.Rooms).ToList())
             {
-                hotelList.Add(hotel);
+                hotelList.Add(new HotelDto { Hotel = hotel, City = _context.Cities.Where(i => i.Id == hotel.CityId).First().Name });
             }
             return View(hotelList);
         }
@@ -47,7 +41,7 @@ namespace RoomCleanerApp.Controllers
             var updateModel = new UpdateHotelDto()
             {
                 CleanRooms = getRoomList(hotelid),
-                MaxRooms = _context.Hotels.First(i => i.Id == hotelid).TotalRooms,
+                MaxRooms = _context.Hotels.FirstOrDefault(i => i.Id == hotelid).TotalRooms,
                 HotelId = hotelid
             };
 
@@ -95,15 +89,23 @@ namespace RoomCleanerApp.Controllers
         }
 
 
-        public int getCleanerId()
+        public int getCleanerId(int hotelid)
         {
-            var cleaners = _context.RoomsCleaners.Include(i => i.Cleaner).
-                Where(i => i.Cleaned == false).GroupBy(i => new { i.CleanerId }, i => i, (key, g) =>
-                new { cleanerId = key.CleanerId/*, Count = g.Count()*/ });
+            var hotelCityId = _context.Hotels.Find(hotelid).CityId;
+
+            var cleaners = _context.RoomsCleaners.Include(i => i.Cleaner)
+                .Include(i=>i.Cleaner)
+                .Where(i => i.Cleaned == false)
+                .Where(i=>i.Cleaner.CityId == hotelCityId)
+                .GroupBy(i => new { i.CleanerId }, i => i, (key, g) =>
+                    new { cleanerId = key.CleanerId, Count = g.Count() })
+                .Where(i => i.Count < 6);
+
             int[] arr = cleaners.Select(i => i.cleanerId).ToArray();
+
             foreach (var cleaner in _context.Cleaners.ToList())
             {
-                if (arr.Contains(cleaner.Id) == false)
+                if ((arr.Contains(cleaner.Id) == false) && (cleaner.CityId==hotelCityId))
                 {
                     arr = arr.Concat(new int[] { cleaner.Id }).ToArray();
                 }
@@ -123,7 +125,7 @@ namespace RoomCleanerApp.Controllers
             RoomCleaner roomCleaner = new RoomCleaner
             {
                 RoomId = id,
-                CleanerId = getCleanerId()
+                CleanerId = getCleanerId(hotelid)
             };
             _context.RoomsCleaners.Add(roomCleaner);
 
@@ -148,8 +150,7 @@ namespace RoomCleanerApp.Controllers
             };
             _context.Rooms.Add(room);
             _context.SaveChanges();
-            return RedirectToAction("Update", new { id = updateHotelDto.HotelId, form = "create" });
+            return RedirectToAction("Update", new { hotelid = updateHotelDto.HotelId, form = "create" });
         }
-
     }
 }

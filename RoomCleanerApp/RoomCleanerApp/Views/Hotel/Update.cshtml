@@ -28,7 +28,7 @@
                 </td>   
             </tr>
             }
-        }
+    }
 
         @foreach(var room in @Model.CleanRooms)
         {
@@ -44,16 +44,15 @@
             </tr>
             }
         }
-
 </table>
-</table>
-    @if  ((@Model.MaxRooms > @Model.CleanRooms.Count()) || (@Model.CleanRooms.Count()==0)){
 
-@using (Html.BeginForm("Create", "Hotel", FormMethod.Post))
-{
-@Html.HiddenFor(a=>a.HotelId)
-@Html.LabelFor(a=>a.Floor)
-@Html.TextBoxFor(a=>a.Floor)
-<input type="submit" value="Create Room"/>    
-}    
-    }
+@if  ((@Model.MaxRooms > @Model.CleanRooms.Count()) || (@Model.CleanRooms.Count()==0)){
+
+    @using (Html.BeginForm("Create", "Hotel", FormMethod.Post))
+    {
+        @Html.HiddenFor(a=>a.HotelId)
+        @Html.LabelFor(a=>a.Floor)
+        @Html.TextBoxFor(a=>a.Floor)
+        <input type="submit" value="Create Room"/>    
+    }    
+}
