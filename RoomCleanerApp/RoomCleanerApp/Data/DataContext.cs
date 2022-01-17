@@ -13,11 +13,26 @@ namespace RoomCleanerApp.Data
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Hotel>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Hotel>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+
+            modelBuilder.Entity<Room>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Room>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+
+            modelBuilder.Entity<Cleaner>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Cleaner>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+
+            modelBuilder.Entity<RoomCleaner>().Property<bool>("isDeleted");
+            modelBuilder.Entity<RoomCleaner>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+
+
             modelBuilder.Entity<City>().HasData(
            new City
            {

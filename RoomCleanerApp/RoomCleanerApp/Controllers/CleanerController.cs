@@ -2,15 +2,19 @@
 using RoomCleanerApp.Data;
 using RoomCleanerApp.Dtos;
 using RoomCleanerApp.Models;
+using RoomCleanerApp.Repositories;
 
 namespace RoomCleanerApp.Controllers
 {
     public class CleanerController : Controller
     {
         private DataContext _context;
-        public CleanerController(DataContext context)
+        public HotelRepository _hotelRepository;
+
+        public CleanerController(DataContext context, HotelRepository hotelRepository)
         {
             _context = context;
+            _hotelRepository = hotelRepository;
         }
         public IActionResult Index()
         {
@@ -41,8 +45,36 @@ namespace RoomCleanerApp.Controllers
 
         public IActionResult Delete(int cleanerid)
         {
-            _context.Remove(_context.Cleaners.First(i => i.Id == cleanerid));
+            foreach (var roomCleaner in _context.RoomsCleaners
+                .Where(i => i.CleanerId == cleanerid && i.Cleaned == false).ToList())
+            {
+                var newCleanerid = _hotelRepository.getCleanerId(
+                    _context.Rooms.Where(i => i.Id == roomCleaner.RoomId).First().HotelId, cleanerid);
+                if (newCleanerid != 0)
+                {
+                    roomCleaner.CleanerId = newCleanerid;
+                    _context.Update(roomCleaner);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
             _context.SaveChanges();
+
+            foreach (var roomCleaner in _context.RoomsCleaners
+               .Where(i => i.CleanerId == cleanerid).ToList())
+            {
+                roomCleaner.isDeleted = true;
+                _context.Update(roomCleaner);
+            }
+            _context.SaveChanges();
+
+            var cleaner = _context.Cleaners.Find(cleanerid);
+            cleaner.isDeleted = true;
+            _context.Update(cleaner);
+            _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -76,18 +108,18 @@ namespace RoomCleanerApp.Controllers
 
         public IActionResult Cleaned(int roomid, int cleanerid)
         {
-            var cleanedRoom = _context.RoomsCleaners.Where(i => i.CleanerId == cleanerid && i.RoomId == roomid && i.Cleaned == false)
-                .First();
+            var cleanedRoom = _context.RoomsCleaners
+                .Where(i => i.CleanerId == cleanerid && i.RoomId == roomid && i.Cleaned == false).First();
             cleanedRoom.Cleaned = true;
             _context.Update(cleanedRoom);
             _context.SaveChanges();
+
             var updateModel = new UpdateCleanerDto()
             {
                 CleanRooms = getRoomList(cleanerid),
                 CleanerId = cleanerid
             };
             return View("Update", updateModel);
-
         }
     }
 }

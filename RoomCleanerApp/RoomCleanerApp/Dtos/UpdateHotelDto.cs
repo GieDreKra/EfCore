@@ -6,6 +6,6 @@
         public int MaxRooms { get; set; } = 0;
         public int Floor { get; set; }
         public int HotelId { get; set; }
-        
+        public string ErrorMessage { get; set; }
     }
 }

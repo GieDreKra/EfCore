@@ -1,11 +1,11 @@
-﻿@model List<RoomCleanerApp.Dtos.HotelDto>
+﻿@model RoomCleanerApp.Dtos.CreateHotelDto
 <table class="table">
     <tr>
         <th>City</th>
         <th>Address</th>
         <th></th>
     </tr>
-    @foreach(var hotel in @Model)
+    @foreach(var hotel in @Model.HotelDtos)
     { 
         <tr>
             <td>@hotel.City</td>
@@ -18,3 +18,16 @@
         </tr>
     }
 </table>
+@using (Html.BeginForm("CreateHotel", "Hotel", FormMethod.Post))
+    {
+      
+        @Html.LabelFor(a=>a.Address)
+        @Html.TextBoxFor(a=>a.Address)
+
+        @Html.LabelFor(a=>a.TotalRooms)
+        @Html.TextBoxFor(a=>a.TotalRooms)
+
+        @Html.LabelFor(a=>a.AllCities)
+        @Html.DropDownListFor(a=>a.CityId, new SelectList(@Model.AllCities,"Id","Name")) 
+        <input type="submit" value="Create Hotel"/>    
+    }    

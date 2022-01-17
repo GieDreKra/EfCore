@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RoomCleanerApp.Data;
+using RoomCleanerApp.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,14 +11,16 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DataContext>(c => c.UseSqlServer(connectionString));
 
+builder.Services.AddTransient<HotelRepository>();
+
 //var startup = new Startup(builder.Configuration);
 
 //var defaultConnection = System.Configuration.GetConnectionString("DefaultConnection");
-  //  services.AddDbContext<DataContext>(d => d.UseSqlServer(defaultConnection));
-   // services.AddTransient<TodoRepository>();
-   // services.AddTransient<CategoryRepository>();
-  //  services.AddTransient<TagRepository>();
-  //  services.AddControllersWithViews();
+//  services.AddDbContext<DataContext>(d => d.UseSqlServer(defaultConnection));
+// services.AddTransient<TodoRepository>();
+// services.AddTransient<CategoryRepository>();
+//  services.AddTransient<TagRepository>();
+//  services.AddControllersWithViews();
 
 
 
